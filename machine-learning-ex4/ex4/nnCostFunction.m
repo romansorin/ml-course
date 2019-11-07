@@ -40,7 +40,33 @@ Theta2_grad = zeros(size(Theta2));
 %         computed in ex4.m
 %
 
-h_x  = sigmoid(Theta2 * sigmoid(Theta1 * X));
+X = [ones(m,1), X];  % Adding 1 as first column in X
+  
+  a1 = X; % 5000 x 401
+  
+  z2 = a1 * Theta1';  % m x hidden_layer_size == 5000 x 25
+  a2 = sigmoid(z2); % m x hidden_layer_size == 5000 x 25
+  a2 = [ones(size(a2,1),1), a2]; % Adding 1 as first column in z = (Adding bias unit) % m x (hidden_layer_size + 1) == 5000 x 26
+  
+  z3 = a2 * Theta2';  % m x num_labels == 5000 x 10
+  a3 = sigmoid(z3); % m x num_labels == 5000 x 10
+  
+  h_x = a3; % m x num_labels == 5000 x 10
+  
+  %Converting y into vector of 0's and 1's for multi-class classification
+  
+  %%%%% WORKING %%%%%
+  % y_Vec = zeros(m,num_labels);
+  % for i = 1:m
+  %     y_Vec(i,y(i)) = 1;
+  % end
+  %%%%%%%%%%%%%%%%%%%
+  
+  y_Vec = (1:num_labels)==y; % m x num_labels == 5000 x 10
+  
+  %Costfunction Without regularization
+  J = (1/m) * sum(sum((-y_Vec.*log(h_x))-((1-y_Vec).*log(1-h_x))));  %scalar
+  
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
