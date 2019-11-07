@@ -64,8 +64,10 @@ X = [ones(m,1), X];  % Adding 1 as first column in X
   
   y_Vec = (1:num_labels)==y; % m x num_labels == 5000 x 10
   
+  fn = (-y_Vec .* log(h_x)) - ((1-y_Vec) .* log(1-h_x))
+  
   %Costfunction Without regularization
-  J = (1/m) * sum(sum((-y_Vec.*log(h_x))-((1-y_Vec).*log(1-h_x))));  %scalar
+  J = (1/m) * sum(sum(fn));  %scalar
   
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
