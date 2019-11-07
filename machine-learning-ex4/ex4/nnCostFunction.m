@@ -42,16 +42,10 @@ Theta2_grad = zeros(size(Theta2));
 
 X = [ones(m,1), X];  % Adding 1 as first column in X
   
-  a1 = X; % 5000 x 401
-  
-  z2 = a1 * Theta1';  % m x hidden_layer_size == 5000 x 25
-  a2 = sigmoid(z2); % m x hidden_layer_size == 5000 x 25
+  a2 = sigmoid(X * Theta1'); % m x hidden_layer_size == 5000 x 25
   a2 = [ones(size(a2,1),1), a2]; % Adding 1 as first column in z = (Adding bias unit) % m x (hidden_layer_size + 1) == 5000 x 26
   
-  z3 = a2 * Theta2';  % m x num_labels == 5000 x 10
-  a3 = sigmoid(z3); % m x num_labels == 5000 x 10
-  
-  h_x = a3; % m x num_labels == 5000 x 10
+  h_x = sigmoid(a2 * Theta2'); % m x num_labels == 5000 x 10
   
   %Converting y into vector of 0's and 1's for multi-class classification
   
@@ -70,6 +64,10 @@ X = [ones(m,1), X];  % Adding 1 as first column in X
   J = (1/m) * sum(sum(fn));  %scalar
   
 
+reg_J = (lambda/(2*m)) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2))); %scalar
+  
+  %Costfunction With regularization
+J = J + reg_J
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
