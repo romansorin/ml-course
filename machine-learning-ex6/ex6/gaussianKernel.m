@@ -16,7 +16,9 @@ sim = 0;
 %
 %
 
-
+vecs = sum((x1-x2).^2)
+bandwidth = 2 * sigma ^ 2
+sim = exp(- vecs/bandwidth)
 
 
 
